@@ -1,0 +1,282 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <vector> 
+#include <cstdio>
+#include <mlpack/core.hpp>
+#include <mlpack/methods/kmeans/kmeans.hpp>
+#include <mlpack/methods/pca/pca.hpp>
+
+using namespace std;
+using namespace mlpack;
+using namespace mlpack::kmeans;
+using namespace mlpack::pca;
+
+int teamid_full (std::string team) {
+    if (team.compare("Boston Celtics") == 0) {
+        return 1;
+    } else if (team.compare("Brooklyn Nets") == 0) {
+        return 2;
+    } else if (team.compare("New York Knicks") == 0) {
+        return 3;
+    } else if (team.compare("Philadelphia 76ers") == 0) {
+        return 4;
+    } else if (team.compare("Toronto Raptors") == 0) {
+        return 5;
+    } else if (team.compare("Chicago Bulls") == 0) {
+        return 6;
+    } else if (team.compare("Cleveland Cavaliers") == 0) {
+        return 7;
+    } else if (team.compare("Detroit Pistons") == 0) {
+        return 8;
+    } else if (team.compare("Indiana Pacers") == 0) {
+        return 9;
+    } else if (team.compare("Milwaukee Bucks") == 0) {
+        return 10;
+    } else if (team.compare("Atlanta Hawks") == 0) {
+        return 11;
+    } else if (team.compare("Charlotte Hornets") == 0) {
+        return 12;
+    } else if (team.compare("Miami Heat") == 0) {
+        return 13;
+    } else if (team.compare("Orlando Magic") == 0) {
+        return 14;
+    } else if (team.compare("Washington Wizards") == 0) {
+        return 15;
+    } else if (team.compare("Denver Nuggets") == 0) {
+        return 16;
+    } else if (team.compare("Minnesota Timberwolves") == 0) {
+        return 17;
+    } else if (team.compare("Oklahoma City Thunder") == 0) {
+        return 18;
+    } else if (team.compare("Portland Trail Blazers") == 0) {
+        return 19;
+    } else if (team.compare("Utah Jazz") == 0) {
+        return 20;
+    } else if (team.compare("Golden State Warriors") == 0) {
+        return 21;
+    } else if (team.compare("Los Angeles Clippers") == 0) {
+        return 22;
+    } else if (team.compare("Los Angeles Lakers") == 0) {
+        return 23;
+    } else if (team.compare("Phoenix Suns") == 0) {
+        return 24;
+    } else if (team.compare("Sacramento Kings") == 0) {
+        return 25;
+    } else if (team.compare("Dallas Mavericks") == 0) {
+        return 26;
+    } else if (team.compare("Houston Rockets") == 0) {
+        return 27;
+    } else if (team.compare("Memphis Grizzlies") == 0) {
+        return 28;
+    } else if (team.compare("New Orleans Pelicans") == 0) {
+        return 29;
+    } else if (team.compare("San Antonio Spurs") == 0) {
+        return 30;
+    }
+    return -1;
+}
+
+std::vector<std::vector<double> > summary_data_read(const std::string &filename) {
+    ifstream file (filename); 
+    std::string::size_type sz;
+    std::string data_line;
+    std::vector<std::vector<double> > data_matrix;
+    std::string data_line_num;
+    while ( file.good() )
+    {
+        while (getline ( file, data_line)) { 
+		std::istringstream data_line_str(data_line);
+            	std::vector<double> items;
+		int att_index = 0;
+        	while(std::getline(data_line_str, data_line_num, ',')) {
+			if (att_index == 0) {
+				int teamID = teamid_full(data_line_num);
+				items.push_back(teamID);
+			} else {
+				items.push_back(std::stof(data_line_num,&sz));
+			}
+			att_index ++;			
+		}
+		data_matrix.push_back(items);		
+	}
+    }
+	return data_matrix;
+}
+
+std::vector<int> read_line (const std::string &filename) {
+	ifstream file (filename); 
+    	std::string::size_type sz;
+    	std::string data_line;
+    	std::vector<int> data_matrix;
+    	std::string data_line_num;
+    	while (file.good() )
+    	{
+		while(std::getline(file, data_line_num, ',')) {
+			int item = std::stoi(data_line_num,&sz);
+			data_matrix.push_back(item);	
+		}	
+    	}
+	/*for (unsigned i = 0; i < data_matrix.size(); i++) {
+		std::cout<<data_matrix[i]<<",";
+	}
+	std::cout<<endl;*/
+	return data_matrix;
+}
+
+std::vector<std::vector<double> > data_matrix_cat(std::vector<std::vector<double> >& data_matrix1, std::vector<std::vector<double> >& data_matrix2, std::vector<std::vector<double> >& data_matrix3, std::vector<std::vector<double> >& data_matrix4) {
+	std::vector<std::vector<double> > data_matrix_all;
+	if (data_matrix1.size() == data_matrix2.size() && data_matrix1.size() == data_matrix3.size() && data_matrix1.size() == data_matrix4.size()) {
+		int col_size = data_matrix1[0].size() + data_matrix2[0].size() + data_matrix3[0].size() + data_matrix4[0].size() - 3;
+		data_matrix_all.resize(data_matrix1.size(), std::vector<double> (col_size, 0));
+		for (unsigned i = 0; i < data_matrix1.size(); i++) {
+			for (int j = 0; j < col_size; j++) {
+				if((unsigned)j < data_matrix1[0].size()) {
+					data_matrix_all[i][j] = data_matrix1[i][j];
+				} else if ((unsigned)j >= data_matrix1[0].size() && (unsigned)j < data_matrix1[0].size() + data_matrix2[0].size() - 1) {
+					data_matrix_all[i][j] = data_matrix2[i][j - data_matrix1[0].size() + 1];
+				} else if ((unsigned)j >= data_matrix1[0].size() + data_matrix2[0].size() - 1 && (unsigned)j < data_matrix1[0].size() + data_matrix2[0].size() - 1 + data_matrix3[0].size()  - 1) {
+					data_matrix_all[i][j] = data_matrix3[i][j - data_matrix1[0].size() + 1 - data_matrix2[0].size() + 1];
+				} else if ((unsigned)j >= data_matrix1[0].size() + data_matrix2[0].size() - 1 + data_matrix3[0].size()  - 1 && j < col_size) {
+					data_matrix_all[i][j] = data_matrix4[i][j - data_matrix1[0].size() + 1 - data_matrix2[0].size() + 1 - data_matrix3[0].size() + 1];
+				}
+				
+			}
+		}
+	}		
+	return data_matrix_all;
+}
+
+void NBA_pre_cluster(std::string &year) {
+	string dir = "season_summary";
+	string input = "input";
+	string output = "output";
+    	string fileformat = ".csv";
+    	string table1 = "TRADITIONAL_STATS";
+    	string table2 = "CLUTCH_TRADITIONAL_STATS";
+    	string table3 = "SHOOTING_STATS";
+    	string table4 = "OPPONENT_SHOOTING_STATS";
+        string file1 = dir + "/" + year + "/" + input + "/" + year+ table1 + fileformat;
+	string file2 = dir + "/" + year + "/" + input + "/" + year+ table2 + fileformat;
+	string file3 = dir + "/" + year + "/" + input + "/" + year+ table3 + fileformat;
+ 	string file4 = dir + "/" + year + "/" + input + "/" + year+ table4 + fileformat;
+   	std::vector<std::vector<double> > data_matrix1 = summary_data_read(file1);
+	std::vector<std::vector<double> > data_matrix2 = summary_data_read(file2);
+	std::vector<std::vector<double> > data_matrix3 = summary_data_read(file3);
+	std::vector<std::vector<double> > data_matrix4 = summary_data_read(file4);
+	std::vector<std::vector<double> > data_set = data_matrix_cat(data_matrix1,data_matrix2,data_matrix3,data_matrix4);
+	string summary_file = dir + "/" + year + "/" + output + "/" + year + "_season_summary" + fileformat;
+	std::remove(summary_file.c_str()); 
+    	ofstream outputFile;
+    	outputFile.open(summary_file);
+	std::vector<double> team_order;
+    	for (unsigned i = 0; i < data_set.size(); i++)
+    	{
+		team_order.push_back(data_set[i][0]);
+        	for (unsigned j = 1; j < data_set[i].size(); j++)
+        	{
+		    	if ( j != data_set[i].size() - 1) {
+				outputFile << data_set[i][j]<<",";
+		    	} else {
+		       		outputFile << data_set[i][j]<<"\n";
+		    	}
+        	}
+   	 }
+   	 outputFile.close();
+	 string teamorder_file = dir + "/" + year + "/" + output + "/" + year +"_summary_team_order" + fileformat;
+	 std::remove(teamorder_file.c_str()); 
+	 outputFile.open(teamorder_file);
+	 for (unsigned i = 0; i < team_order.size(); i++) {
+		if ( i != team_order.size() - 1) { 
+			outputFile << team_order[i]<<",";
+		} else {
+			outputFile << team_order[i];
+		}
+	}
+	outputFile.close();
+}
+
+void NBA_pca(std::string &year, const bool scaleData, double var_to_retain) {
+	string dir = "season_summary";
+	string input = "input";
+	string output = "output";
+	string fileformat = ".csv";
+	string inputfile = dir + "/" + year + "/" + output + "/" + year + "_season_summary" + fileformat;
+ 	arma::mat dataset;
+  	data::Load(inputfile, dataset, true);
+	//const size_t newDimension,
+	//size_t newDimension = newDimension;
+  	PCA p(scaleData);
+  	//double varRetained;
+ 	//varRetained = p.Apply(dataset, var_to_retain);
+	p.Apply(dataset, var_to_retain);
+ 	//varRetained = p.Apply(dataset, newDimension);
+	string outputfile = dir + "/" + year + "/" + output + "/" + year + "_pca_output" + fileformat;
+  	data::Save(outputfile, dataset);	
+}
+
+void NBA_k_means(std::string &year, size_t num_cluster) {
+	string dir = "season_summary";
+	string input = "input";
+	string output = "output";
+	string fileformat = ".csv";
+	string inputfile = dir + "/" + year + "/" + output + "/" + year + "_pca_output" + fileformat;
+	arma::mat dataset;
+  	data::Load(inputfile, dataset, true);
+	arma::Col<size_t> assignments;
+	KMeans<> k;
+	k.Cluster(dataset, num_cluster, assignments);
+	string outputfile = dir + "/" + year + "/" + output + "/" + year + "_k_means_output" + fileformat;	
+	data::Save(outputfile, assignments);
+}
+
+void NBA_cluster_teams(std::string &year, size_t num_cluster) {
+	string dir = "season_summary";
+	string input = "input";
+	string output = "output";
+	string fileformat = ".csv";
+	string clusterfile = dir + "/" + year + "/" + output + "/" + year + "_k_means_output" + fileformat;
+	string orderfile = dir + "/" + year + "/" + output + "/" + year + "_summary_team_order" + fileformat;
+	std::vector<std::vector<int> > team_clusters((int)num_cluster);
+	std::vector<int> cluster_result = read_line (clusterfile);
+	std::vector<int> team_id_order = read_line (orderfile);
+	int num = num_cluster;
+	string cluster_team = dir + "/" + year + "/" + output + "/" + year + "_cluster_team_output" + fileformat;	
+	std::remove(cluster_team.c_str()); 
+    	ofstream outputFile;
+    	outputFile.open(cluster_team);
+	for (int index = 0; index < num; index++) {
+		for (unsigned i = 0; i < cluster_result.size(); i++) {
+			if (cluster_result[i] == index) {
+				team_clusters[index].push_back(team_id_order[i]);
+			}
+		}	
+	}
+
+	for (unsigned i = 0; i < team_clusters.size(); i++)
+    	{
+        	for (unsigned j = 0; j < team_clusters[i].size(); j++)
+        	{
+		    	if ( j != team_clusters[i].size() - 1) {
+				outputFile << team_clusters[i][j]<<",";
+		    	} else {
+		       		outputFile << team_clusters[i][j]<<"\n";
+		    	}
+        	}
+   	 }
+	outputFile.close();
+}
+
+int main(){
+	std::string year = "2014";
+	NBA_pre_cluster(year);
+	double var_to_retain = 1.0;
+	NBA_pca(year, true, var_to_retain);
+	size_t num_cluster = 5;
+	NBA_k_means(year, num_cluster);
+	NBA_cluster_teams(year, num_cluster); 
+	return 1;
+}
+
+//g++ -std=c++11 -Wall test.cpp -lmlpack -O1 -larmadillo -o test
