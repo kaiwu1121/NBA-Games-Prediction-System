@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <hmm_emission_distribution_0>0.351351351351351
+0.648648648648649
+</hmm_emission_distribution_0>
+  <hmm_emission_distribution_1>0.568181818181818
+0.431818181818182
+</hmm_emission_distribution_1>
+  <hmm_states>2</hmm_states>
+  <hmm_transition>0.324324324324324,0.558139534883721
+0.675675675675676,0.441860465116279
+</hmm_transition>
+  <hmm_type>discrete</hmm_type>
+</root>

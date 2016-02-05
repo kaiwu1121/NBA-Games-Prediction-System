@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <hmm_emission_distribution_0>0
+0
+1
+0
+0
+0
+0
+0
+</hmm_emission_distribution_0>
+  <hmm_emission_distribution_1>0
+0
+0.5
+0.5
+0
+0
+0
+0
+</hmm_emission_distribution_1>
+  <hmm_emission_distribution_2>0
+0.1
+0.3
+0.45
+0.15
+0
+0
+0
+</hmm_emission_distribution_2>
+  <hmm_emission_distribution_3>0.027027027027027
+0
+0.297297297297297
+0.378378378378378
+0.243243243243243
+0.027027027027027
+0
+0.027027027027027
+</hmm_emission_distribution_3>
+  <hmm_emission_distribution_4>0
+0
+0.111111111111111
+0.666666666666667
+0.166666666666667
+0.0555555555555556
+0
+0
+</hmm_emission_distribution_4>
+  <hmm_emission_distribution_5>0
+0
+0
+0
+1
+0
+0
+0
+</hmm_emission_distribution_5>
+  <hmm_emission_distribution_6>0
+0
+0
+0
+0
+0
+0
+0
+</hmm_emission_distribution_6>
+  <hmm_emission_distribution_7>0
+0
+0
+0
+1
+0
+0
+0
+</hmm_emission_distribution_7>
+  <hmm_states>8</hmm_states>
+  <hmm_transition>0,0,0.05,0,0,0,0,0
+0,0,0.05,0.0277777777777778,0,0,0,0
+0,1,0.25,0.25,0.166666666666667,0,0,0
+1,0,0.55,0.388888888888889,0.5,0.5,0,1
+0,0,0.1,0.333333333333333,0.166666666666667,0.5,0,0
+0,0,0,0,0.111111111111111,0,0,0
+0,0,0,0,0,0,0,0
+0,0,0,0,0.0555555555555556,0,0,0
+</hmm_transition>
+  <hmm_type>discrete</hmm_type>
+</root>

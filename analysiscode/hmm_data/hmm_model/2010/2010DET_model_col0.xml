@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <hmm_emission_distribution_0>0.2
+0.6
+0.2
+0
+0
+</hmm_emission_distribution_0>
+  <hmm_emission_distribution_1>0.0869565217391304
+0.130434782608696
+0.391304347826087
+0.304347826086957
+0.0869565217391304
+</hmm_emission_distribution_1>
+  <hmm_emission_distribution_2>0.0416666666666667
+0.25
+0.25
+0.416666666666667
+0.0416666666666667
+</hmm_emission_distribution_2>
+  <hmm_emission_distribution_3>0.0416666666666667
+0.375
+0.291666666666667
+0.208333333333333
+0.0833333333333333
+</hmm_emission_distribution_3>
+  <hmm_emission_distribution_4>0
+0.4
+0.4
+0.2
+0
+</hmm_emission_distribution_4>
+  <hmm_states>5</hmm_states>
+  <hmm_transition>0.2,0.130434782608696,0.0416666666666667,0,0
+0.4,0.130434782608696,0.375,0.304347826086957,0.4
+0.2,0.260869565217391,0.208333333333333,0.434782608695652,0.2
+0.2,0.391304347826087,0.291666666666667,0.217391304347826,0.4
+0,0.0869565217391304,0.0833333333333333,0.0434782608695652,0
+</hmm_transition>
+  <hmm_type>discrete</hmm_type>
+</root>
