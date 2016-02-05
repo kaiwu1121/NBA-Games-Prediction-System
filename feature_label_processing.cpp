@@ -31,4 +31,15 @@ std::vector<double> label_processing (std::vector<std::vector<double> >& data_ma
 	return label;
 }
 
-
+std::vector<std::vector<double> > date_processing (std::vector<std::vector<double> >& pre_data) {
+	int rows = pre_data.size();
+	//int cols = pre_data[0].size();
+	std::vector<std::vector<double> > date_data;
+	date_data.resize(rows, std::vector<double>(3, 0));
+	for (int i = 0; i < rows; i++) {	
+		for (int j = 0 ; j < 3; j++) {
+			date_data[i][j] = pre_data[i][j];
+		}
+	}
+	return date_data;
+}

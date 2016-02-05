@@ -9,7 +9,7 @@ int teamid (std::string team) {
 		return 4;
 	} else if (team.compare("TOR") == 0) {
 		return 5;
-	} else if (team.compare( "CHI") == 0) {
+	} else if (team.compare("CHI") == 0) {
 		return 6;
 	} else if (team.compare("CLE") == 0) {
 		return 7;
@@ -59,6 +59,10 @@ int teamid (std::string team) {
 		return 29;
 	} else if (team.compare("SAS") == 0) {
 		return 30;
+	} else if (team.compare("NJN") == 0) {
+		return 2;	
+	} else if (team.compare("NOH") == 0) {
+		return 29;
 	}
 	return -1;
 }
@@ -124,7 +128,11 @@ int teamid_full (std::string team) {
         return 29;
     } else if (team.compare("San Antonio Spurs") == 0) {
         return 30;
-    }
+    } else if (team.compare("NEW ORLEANS HORNETS") == 0) {
+		return 29;
+	} else if (team.compare("New Jersey Nets") == 0) {
+		return 2;
+	}
     return -1;
 }
 
